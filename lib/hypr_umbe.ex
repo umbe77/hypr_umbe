@@ -37,7 +37,7 @@ defmodule HyprUmbe do
         IO.puts("Connection closed")
 
       {:error, reason} ->
-        IO.puts("Failed to connect #{inspect(reason)}")
+        IO.puts("Failed to receive from socket heyprland socket2: #{inspect(reason)}")
     end
   end
 
