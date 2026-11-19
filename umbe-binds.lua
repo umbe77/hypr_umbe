@@ -74,6 +74,7 @@ bind_key(main_mod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 bind_key(main_mod .. " + SHIFT + M", function()
 	local next_layout = current_layout() == MONOCLE and DEFAULT_LAYOUT or MONOCLE
 	hl.config({ general = { layout = next_layout } })
+	hl.dispatch(hl.dsp.event("hyprlayout," .. next_layout)) -- notify the DMS layout widget
 	if next_layout == MONOCLE then
 		monocle.enable()
 	else
