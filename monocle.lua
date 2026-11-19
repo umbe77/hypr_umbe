@@ -33,6 +33,11 @@ local function refresh(ws, current)
 			set_hidden(w, current == nil or w.address ~= current.address)
 		end
 	end
+	-- Hidden windows still take pointer input: keep the visible one on top of
+	-- the stack, otherwise follow_mouse focuses whatever window sits above it.
+	if current ~= nil then
+		hl.dispatch(hl.dsp.window.alter_zorder({ mode = "top", window = current }))
+	end
 end
 
 -- Explicit state: tiled_layout lags one tick behind hl.config(), which would

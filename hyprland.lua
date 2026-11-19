@@ -22,7 +22,8 @@ hl.config({
 		-- empty inherits XKB_DEFAULT_LAYOUT (libxkbcommon), falls back to "us"
 		kb_layout = "",
 		numlock_by_default = true,
-		follow_mouse = 1,
+		follow_mouse = 0,
+		sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 		-- dms/input.lua is required later and wins per key
 		touchpad = {
 			tap_to_click = true,
