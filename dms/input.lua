@@ -2,6 +2,7 @@
 
 hl.config({
 	input = {
+		follow_mouse = 1,
 		sensitivity = 0.50,
 		touchpad = {
 			natural_scroll = true,

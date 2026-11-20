@@ -1,5 +1,3 @@
-local hs = require("hyprsplit")
-
 local fileManager = "thunar"
 
 local function bind_key(key, action, opts)
@@ -68,15 +66,6 @@ bind_key(main_mod .. " + comma", hl.dsp.focus({ monitor = "-1" }))
 
 bind_key(main_mod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "+1" }))
 bind_key(main_mod .. " + SHIFT + comma", hl.dsp.window.move({ monitor = "-1" }))
-
--- Switch workspaces with mainMod + [0-9]
--- Move active window to a workspace with mainMod + SHIFT + [0-9]
-
-for i = 1, 10 do
-	local key = i % 10 -- 10 maps to key 0
-	bind_key(main_mod .. " + " .. key, hs.dsp.focus({ workspace = i }))
-	bind_key(main_mod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i }))
-end
 
 -- Scroll through existing workspaces with mainMod + scroll
 bind_key(main_mod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))

@@ -1,9 +1,6 @@
 -- Hyprland configuration (Lua) — https://wiki.hypr.land/configuring/
-local hs = require("hyprsplit")
-hs.config({
-	num_workspaces = 10,
-	persistent_workspaces = true,
-})
+
+package.path = string.format("%s;./?.lua;./?/init.lua", package.path)
 
 -- DMS_STARTUP_BEGIN
 hl.on("hyprland.start", function()
@@ -36,12 +33,6 @@ hl.config({
 			natural_scroll = true,
 		},
 	},
-	general = {
-		gaps_in = 0,
-		gaps_out = 0,
-		border_size = 0,
-		layout = "monocle",
-	},
 	decoration = {
 		rounding = 10,
 		active_opacity = 1.0,
@@ -60,11 +51,6 @@ hl.config({
 	cursor = {
 		inactive_timeout = 2,
 		hide_on_key_press = true,
-	},
-	scrolling = {
-		fullscreen_on_one_column = true,
-		column_width = 1.0,
-		focus_fit_method = 1,
 	},
 })
 
@@ -121,4 +107,6 @@ require("dms.binds")
 require("dms.binds-user")
 require("dms.windowrules")
 
+require("umbe-layout") -- Load custom layout from umbe-layout.lua
 require("umbe-binds") -- Load custom keybinds from umbe-binds.lua
+require("umbe-split-workspace") -- Load custom workspace splitting from umbe-split-workspace.lua
