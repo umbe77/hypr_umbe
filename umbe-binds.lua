@@ -57,7 +57,7 @@ local function cycle_tiled_focus(step)
 			return
 		end
 		local target = ((current - 1 + step) % #tiled) + 1
-		hl.dispatch(hl.dsp.focus({ window = tiled[target] }))
+		monocle.focus(tiled[target]) -- clears no_focus on hidden monocle windows
 	end
 end
 
