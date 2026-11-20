@@ -2,6 +2,8 @@
 -- Loaded after binds.lua: binding a stock key here replaces it, hl.unbind("SUPER + X") frees it.
 -- Saving in the DMS keybind editor rewrites this file and keeps only hl.bind/hl.unbind lines.
 
+hl.unbind("CTRL + Control_L")
+hl.bind("CTRL + Control_L", hl.dsp.exec_cmd("dms ipc call findPointer tap"), { release = true, description = "Find pointer" })
 hl.unbind("SUPER + H")
 hl.unbind("SUPER + J")
 hl.unbind("SUPER + K")

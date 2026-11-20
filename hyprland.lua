@@ -12,10 +12,16 @@ hl.on("hyprland.start", function()
 		hl.exec_cmd("systemctl --user start hyprland-session.target")
 	end
 	hl.exec_cmd("hypridle")
-	hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-	hl.exec_cmd("elecwhat")
 end)
 -- DMS_STARTUP_END
+
+-- Start elecwhat 60s after Hyprland is up
+local elecwhat_timer -- keep a reference so the timer isn't garbage-collected
+hl.on("hyprland.start", function()
+	elecwhat_timer = hl.timer(function()
+		hl.exec_cmd("elecwhat")
+	end, { timeout = 60000, type = "oneshot" })
+end)
 
 hl.config({
 	input = {
@@ -50,6 +56,10 @@ hl.config({
 	misc = {
 		disable_hyprland_logo = true,
 		disable_splash_rendering = true,
+	},
+	cursor = {
+		inactive_timeout = 2,
+		hide_on_key_press = true,
 	},
 	scrolling = {
 		fullscreen_on_one_column = true,

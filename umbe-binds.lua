@@ -66,9 +66,6 @@ local main_mod = "SUPER" -- Sets "Windows" key as main modifier
 bind_key("ALT + P", hl.dsp.exec_cmd("~/.scripts/home-dashboard"))
 
 bind_key(main_mod .. " + E", hl.dsp.exec_cmd(fileManager))
-bind_key(main_mod .. " + N", hl.dsp.window.float({ action = "toggle" }))
--- bind_key("ALT + SPACE", hl.dsp.exec_cmd(menu))
-bind_key(main_mod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 
 -- Toggle the global layout between scrolling and monocle
 bind_key(main_mod .. " + SHIFT + M", function()
@@ -107,10 +104,6 @@ for i = 1, 10 do
 	bind_key(main_mod .. " + " .. key, hs.dsp.focus({ workspace = i }))
 	bind_key(main_mod .. " + SHIFT + " .. key, hs.dsp.window.move({ workspace = i }))
 end
-
--- Example special workspace (scratchpad)
--- bind_key(main_mod .. " + S", hl.dsp.workspace.toggle_special("magic"))
--- bind_key(main_mod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 bind_key(main_mod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
