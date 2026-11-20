@@ -1,5 +1,4 @@
 local hs = require("hyprsplit")
-local monocle = require("monocle")
 
 local fileManager = "thunar"
 
@@ -8,10 +7,10 @@ local function bind_key(key, action, opts)
 	hl.bind(key, action, opts)
 end
 
-local MONOCLE = monocle.LAYOUT -- custom layout registered in monocle.lua
+local MONOCLE = "monocle" -- Hyprland's native monocle layout
 local DEFAULT_LAYOUT = "scrolling"
 
--- Name of the tiled layout on the active workspace (e.g. "scrolling", "lua:monocle")
+-- Name of the tiled layout on the active workspace (e.g. "scrolling", "monocle")
 local function current_layout()
 	local ws = hl.get_active_workspace()
 	if ws and ws.tiled_layout and ws.tiled_layout ~= "" then
@@ -35,32 +34,6 @@ local function per_layout(actions)
 	end
 end
 
--- Focus the next (step = 1) / previous (step = -1) tiled window on the active workspace, wrapping around.
-local function cycle_tiled_focus(step)
-	return function()
-		local ws = hl.get_active_workspace()
-		if ws == nil then
-			return
-		end
-		local tiled = {}
-		local current = 0
-		local active = hl.get_active_window()
-		for _, w in ipairs(hl.get_workspace_windows(ws)) do
-			if w.mapped and not w.floating then
-				table.insert(tiled, w)
-				if active and w.address == active.address then
-					current = #tiled
-				end
-			end
-		end
-		if #tiled < 2 then
-			return
-		end
-		local target = ((current - 1 + step) % #tiled) + 1
-		monocle.focus(tiled[target]) -- clears no_focus on hidden monocle windows
-	end
-end
-
 local main_mod = "SUPER" -- Sets "Windows" key as main modifier
 
 bind_key("ALT + P", hl.dsp.exec_cmd("~/.scripts/home-dashboard"))
@@ -72,17 +45,17 @@ bind_key(main_mod .. " + SHIFT + M", function()
 	local next_layout = current_layout() == MONOCLE and DEFAULT_LAYOUT or MONOCLE
 	hl.config({ general = { layout = next_layout } })
 	hl.dispatch(hl.dsp.event("hyprlayout," .. next_layout)) -- notify the DMS layout widget
-	if next_layout == MONOCLE then
-		monocle.enable()
-	else
-		monocle.disable()
-	end
-	hl.notification.create({ text = "Layout: " .. next_layout, duration = "1500" })
 end)
 
 -- h/l: move between columns in scrolling, cycle focus in monocle
-bind_key(main_mod .. " + h", per_layout({ [MONOCLE] = cycle_tiled_focus(-1), default = hl.dsp.layout("move -col") }))
-bind_key(main_mod .. " + l", per_layout({ [MONOCLE] = cycle_tiled_focus(1), default = hl.dsp.layout("move +col") }))
+bind_key(
+	main_mod .. " + h",
+	per_layout({ [MONOCLE] = hl.dsp.layout("cycleprev"), default = hl.dsp.layout("move -col") })
+)
+bind_key(
+	main_mod .. " + l",
+	per_layout({ [MONOCLE] = hl.dsp.layout("cyclenext"), default = hl.dsp.layout("move +col") })
+)
 
 -- SHIFT + h/l: resize columns in scrolling, nothing in monocle
 bind_key(main_mod .. " + SHIFT + h", per_layout({ default = hl.dsp.layout("colresize -0.2") }))

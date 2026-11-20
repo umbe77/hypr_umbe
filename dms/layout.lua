@@ -4,7 +4,7 @@ hl.config({
 	general = {
 		border_size = 1,
 		resize_on_border = true,
-		layout = "scrolling",
+		layout = "monocle",
 	},
 	scrolling = {
 		direction = "right",

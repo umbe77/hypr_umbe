@@ -40,7 +40,7 @@ hl.config({
 		gaps_in = 0,
 		gaps_out = 0,
 		border_size = 0,
-		layout = "scrolling",
+		layout = "monocle",
 	},
 	decoration = {
 		rounding = 10,
@@ -74,7 +74,6 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 5, bezier = "default
 hl.animation({ leaf = "windowsMove", enabled = true, speed = 4, bezier = "default" })
 hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "default" })
 hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "default" })
-hl.animation({ leaf = "fadeSwitch", enabled = true, speed = 4, bezier = "default" }) -- monocle crossfade speed
 
 hl.window_rule({ match = { class = "^(org\\.wezfurlong\\.wezterm)$" }, tile = true })
 hl.window_rule({ match = { class = "^(org\\.gnome\\.)" }, rounding = 12 })
@@ -122,5 +121,4 @@ require("dms.binds")
 require("dms.binds-user")
 require("dms.windowrules")
 
-require("monocle") -- Register the custom monocle layout (lua:monocle)
 require("umbe-binds") -- Load custom keybinds from umbe-binds.lua
