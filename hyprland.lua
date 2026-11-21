@@ -13,11 +13,8 @@ end)
 -- DMS_STARTUP_END
 
 -- Start elecwhat 60s after Hyprland is up
-local elecwhat_timer -- keep a reference so the timer isn't garbage-collected
 hl.on("hyprland.start", function()
-	elecwhat_timer = hl.timer(function()
-		hl.exec_cmd("elecwhat")
-	end, { timeout = 60000, type = "oneshot" })
+	hl.exec_cmd("whatsie")
 end)
 
 hl.config({
@@ -92,8 +89,8 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name = "Elecwhat",
-	match = { class = "elecwhat" },
+	name = "whatsie",
+	match = { class = "com.ktechpit.whatsie" },
 	float = true,
 	size = { "(monitor_w*0.7)", "(monitor_h*0.7)" },
 })
