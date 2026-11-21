@@ -1,9 +1,5 @@
+local h = require("helper")
 local fileManager = "thunar"
-
-local function bind_key(key, action, opts)
-	hl.unbind(key) -- Unbind the key first to avoid conflicts
-	hl.bind(key, action, opts)
-end
 
 local MONOCLE = "monocle" -- Hyprland's native monocle layout
 local DEFAULT_LAYOUT = "scrolling"
@@ -34,73 +30,77 @@ end
 
 local main_mod = "SUPER" -- Sets "Windows" key as main modifier
 
-bind_key("ALT + P", hl.dsp.exec_cmd("~/.scripts/home-dashboard"))
+h.bind_key("ALT + P", hl.dsp.exec_cmd("~/.scripts/home-dashboard"))
 
-bind_key(main_mod .. " + E", hl.dsp.exec_cmd(fileManager))
+h.bind_key(main_mod .. " + E", hl.dsp.exec_cmd(fileManager))
 
 -- Toggle the global layout between scrolling and monocle
-bind_key(main_mod .. " + SHIFT + M", function()
+h.bind_key(main_mod .. " + SHIFT + M", function()
 	local next_layout = current_layout() == MONOCLE and DEFAULT_LAYOUT or MONOCLE
 	hl.config({ general = { layout = next_layout } })
 	hl.dispatch(hl.dsp.event("hyprlayout," .. next_layout)) -- notify the DMS layout widget
 end)
 
 -- h/l: move between columns in scrolling, cycle focus in monocle
-bind_key(
+h.bind_key(
 	main_mod .. " + h",
 	per_layout({ [MONOCLE] = hl.dsp.layout("cycleprev"), default = hl.dsp.layout("move -col") })
 )
-bind_key(
+h.bind_key(
 	main_mod .. " + l",
 	per_layout({ [MONOCLE] = hl.dsp.layout("cyclenext"), default = hl.dsp.layout("move +col") })
 )
 
 -- SHIFT + h/l: resize columns in scrolling, nothing in monocle
-bind_key(main_mod .. " + SHIFT + h", per_layout({ default = hl.dsp.layout("colresize -0.2") }))
-bind_key(main_mod .. " + SHIFT + l", per_layout({ default = hl.dsp.layout("colresize +0.2") }))
-bind_key(main_mod .. " + SHIFT + a", hl.dsp.layout("fit active"))
+h.bind_key(main_mod .. " + SHIFT + h", per_layout({ default = hl.dsp.layout("colresize -0.2") }))
+h.bind_key(main_mod .. " + SHIFT + l", per_layout({ default = hl.dsp.layout("colresize +0.2") }))
+h.bind_key(main_mod .. " + SHIFT + a", hl.dsp.layout("fit active"))
 
 -- Move between monitors
-bind_key(main_mod .. " + period", hl.dsp.focus({ monitor = "+1" }))
-bind_key(main_mod .. " + comma", hl.dsp.focus({ monitor = "-1" }))
+h.bind_key(main_mod .. " + period", hl.dsp.focus({ monitor = "+1" }))
+h.bind_key(main_mod .. " + comma", hl.dsp.focus({ monitor = "-1" }))
 
-bind_key(main_mod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "+1" }))
-bind_key(main_mod .. " + SHIFT + comma", hl.dsp.window.move({ monitor = "-1" }))
+h.bind_key(main_mod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "+1" }))
+h.bind_key(main_mod .. " + SHIFT + comma", hl.dsp.window.move({ monitor = "-1" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
-bind_key(main_mod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-bind_key(main_mod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+h.bind_key(main_mod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+h.bind_key(main_mod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
-bind_key(main_mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-bind_key(main_mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+h.bind_key(main_mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+h.bind_key(main_mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Laptop multimedia keys for volume and LCD brightness
-bind_key(
+h.bind_key(
 	"XF86AudioRaiseVolume",
 	hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
 	{ locked = true, repeating = true }
 )
-bind_key(
+h.bind_key(
 	"XF86AudioLowerVolume",
 	hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
 	{ locked = true, repeating = true }
 )
-bind_key(
+h.bind_key(
 	"XF86AudioMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
 	{ locked = true, repeating = true }
 )
-bind_key(
+h.bind_key(
 	"XF86AudioMicMute",
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
 	{ locked = true, repeating = true }
 )
-bind_key("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-bind_key("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
+h.bind_key("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
+h.bind_key(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
+	{ locked = true, repeating = true }
+)
 
 -- Requires playerctl
-bind_key("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
-bind_key("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-bind_key("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
-bind_key("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+h.bind_key("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+h.bind_key("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+h.bind_key("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
+h.bind_key("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
